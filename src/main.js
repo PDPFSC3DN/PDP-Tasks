@@ -514,6 +514,8 @@ async function checkAuthAndRender() {
     return ms.includes(normalizedEmail);
   });
 
+  const masterEmails = ['dhphat12@gmail.com', 'thaohva.work@gmail.com', 'pdp.fsc3.dn@fe.edu.vn'];
+
   if (matchedMember) {
     if (matchedMember.status === 'closed') {
       await customAlert("Tài khoản của bạn đã bị đóng. Vui lòng liên hệ Admin.");
@@ -524,7 +526,6 @@ async function checkAuthAndRender() {
     }
     const memberEmails = [matchedMember.emailFE, matchedMember.emailFPT, matchedMember.gmail]
       .filter(Boolean).map(e => String(e).toLowerCase().trim());
-    const masterEmails = ['dhphat12@gmail.com', 'thaohva.work@gmail.com', 'pdp.fsc3.dn@fe.edu.vn'];
     const isMasterUser = matchedMember.isMaster || masterEmails.includes(normalizedEmail) || memberEmails.some(e => masterEmails.includes(e));
     const isAdminUser = matchedMember.isAdmin || isMasterUser;
     setCurrentUser({ ...matchedMember, sessionEmail: email, isAdmin: isAdminUser, isMaster: isMasterUser });
