@@ -380,6 +380,12 @@ export function bindDashboardEvents() {
     const hasBankInfo = user.bankAccount && user.bankName && user.bankAccountName;
     const isMissingInfo = !hasEmail || !user.phone || !user.startDate || !user.dob || !hasBankInfo;
 
+    console.log('--- DEBUG PROFILE INFO ---');
+    console.log('User object:', user);
+    console.log('isMissingInfo:', isMissingInfo);
+    console.log('hasEmail:', !!hasEmail, 'phone:', !!user.phone, 'startDate:', !!user.startDate, 'dob:', !!user.dob, 'hasBankInfo:', !!hasBankInfo);
+    console.log('Bank info: account =', user.bankAccount, ', name =', user.bankName, ', accName =', user.bankAccountName);
+
     if (isMissingInfo) {
       setTimeout(async () => {
         await customAlert("Vui lòng cập nhật đầy đủ thông tin cá nhân (Email, SĐT, Ngày bắt đầu làm việc, Ngày sinh, Thông tin ngân hàng) để tiếp tục sử dụng hệ thống một cách trơn tru nhất!", "Cập nhật Hồ sơ");
