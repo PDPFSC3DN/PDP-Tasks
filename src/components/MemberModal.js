@@ -409,7 +409,13 @@ export function showMemberModal(member = null, forceViewOnly = false, forceEdit 
       await new Promise(r => setTimeout(r, 600));
 
       const data = { fullName, position };
-      allFields.forEach(f => { const el = root.querySelector('#member-' + f.key); if (el) data[f.key] = el.value.trim(); });
+      allFields.forEach(f => {
+        const el = root.querySelector('#member-' + f.key);
+        if (el) {
+          const val = el.value.trim();
+          data[f.key] = (f.type === 'date' && val === '') ? null : val;
+        }
+      });
       const avatarEl = root.querySelector('.avatar-2xl');
       if (avatarEl?.dataset.newAvatar) data.avatar = avatarEl.dataset.newAvatar;
 
