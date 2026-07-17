@@ -530,16 +530,28 @@ async function checkAuthAndRender() {
     const isAdminUser = matchedMember.isAdmin || isMasterUser;
     setCurrentUser({ ...matchedMember, sessionEmail: email, isAdmin: isAdminUser, isMaster: isMasterUser });
   } else if (masterEmails.includes(normalizedEmail)) {
-    setCurrentUser({
+    const masterMember = {
       id: authUser.id,
-      fullName: authUser.user_metadata?.full_name || email,
-      email: email,
+      fullName: authUser.user_metadata?.full_name || email.split('@')[0],
+      emailFE: email.endsWith('@fe.edu.vn') ? email : '',
+      emailFPT: email.endsWith('@fpt.edu.vn') ? email : '',
+      gmail: (!email.endsWith('@fe.edu.vn') && !email.endsWith('@fpt.edu.vn')) ? email : '',
       position: 'Master Hệ Thống',
-      avatar: authUser.user_metadata?.avatar_url,
       isAdmin: true,
       isMaster: true,
-      sessionEmail: email
-    });
+      status: 'active',
+      phone: '',
+      startDate: new Date().toISOString().split('T')[0],
+      dob: '',
+      avatar: authUser.user_metadata?.avatar_url || '',
+      bankAccount: '',
+      bankName: '',
+      bankAccountName: ''
+    };
+    const { error } = await supabase.from('members').upsert([masterMember], { onConflict: 'id' });
+    if (error) console.error('Error auto-creating master member:', error);
+    await initStore();
+    setCurrentUser({ ...masterMember, sessionEmail: email });
   } else {
     await customAlert("Tài khoản của bạn (" + email + ") không có quyền truy cập hệ thống. Vui lòng liên hệ Admin.");
     supabase.auth.signOut();
