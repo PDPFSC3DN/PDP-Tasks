@@ -542,7 +542,7 @@ async function checkAuthAndRender() {
       status: 'active',
       phone: '',
       startDate: new Date().toISOString().split('T')[0],
-      dob: '',
+      dob: null,
       avatar: authUser.user_metadata?.avatar_url || '',
       bankAccount: '',
       bankName: '',
